@@ -173,7 +173,7 @@
 
 /**/
 
-.ruubEnter {
+.defendEnter {
   position: fixed;
   backdrop-filter: blur(120px);
   width: 100%;
@@ -197,7 +197,7 @@
   transform: scale(1.2);
 }
 
-.ruubBg {
+.defendBg {
   position: fixed;
   height: 100%;
   width: 100%;
@@ -207,7 +207,7 @@
   pointer-events: none;
 }
 
-.ruubOverlay {
+.defendOverlay {
   position: fixed;
   height: 100%;
   width: 100%;
@@ -246,7 +246,7 @@
   aspect-ratio: 1/1;
 }
 
-.ruubProfile {
+.defendProfile {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -254,7 +254,7 @@
   opacity: 0;
 }
 
-.ruubProfile img {
+.defendProfile img {
   height: 200px;
   width: 200px;
   border-radius: 50%;
@@ -264,14 +264,14 @@
 
 }
 
-.ruubProfile img:hover {
+.defendProfile img:hover {
   transform: scale(1.1);
   cursor: pointer;
   box-shadow: none;
   box-shadow: 0 0 75px 0 rgba(0, 0, 0, 0.8);
 }
 
-.ruubProfile .name {
+.defendProfile .name {
   color: #fff;
   font-size: 30px;
   font-weight: 700;
@@ -284,13 +284,13 @@
   gap: 10px;
 }
 
-.ruubProfile .name img {
+.defendProfile .name img {
   height: 21px;
   width: 20px;
   border-radius: 0;
 }
 
-.ruubProfile .bio {
+.defendProfile .bio {
   color: #fff;
   background: #0A0F13;
   font-size: 21px;
@@ -305,11 +305,11 @@
   transition: .1s ease-in-out;
 }
 
-.ruubProfile .bio:hover {
+.defendProfile .bio:hover {
   transform: scale(1.02);
 }
 
-.ruubWrap {
+.defendWrap {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -318,7 +318,7 @@
   opacity: 0;
 }
 
-.ruubItem {
+.defendItem {
   width: 70px !important;
   height: 70px !important;
   background: transparent;
@@ -347,7 +347,7 @@
   z-index: 99999;
 }
 
-@keyframes ruubEnter {
+@keyframes defendEnter {
   0% {
     opacity: 0;
   }
@@ -368,7 +368,7 @@
 
 @media screen and (max-width: 1024px) {
 
-  .ruubProfile {}
+  .defendProfile {}
 
 
   .profile img:hover {
@@ -376,11 +376,11 @@
     cursor: pointer;
   }
 
-  .ruubWrap {
+  .defendWrap {
     gap: 16px;
   }
 
-  .ruubItem {
+  .defendItem {
     width: 56px !important;
     height: 56px !important;
   }
@@ -416,36 +416,36 @@
   .bottom-right {
     bottom: 0;
     right: 0;
-    background: radial-gradient(circle at top left, transparent 20px, #21272a 20px);
+    background: radial-gradient(circle at top left, transparent 20px, #141414 20px);
     z-index: 99;
   }
   
   .bottom-left {
     bottom: 0;
     left: 0;
-    background: radial-gradient(circle at top right, transparent 20px, #21272a 20px);
+    background: radial-gradient(circle at top right, transparent 20px, #141414 20px);
     z-index: 99;
   }
   
   .top-right {
     top: 0;
     right: 0;
-    background: radial-gradient(circle at bottom left, transparent 20px, #21272a 20px);
+    background: radial-gradient(circle at bottom left, transparent 20px, #141414 20px);
     z-index: 99;
   }
   
   .top-left {
     top: 0;
     left: 0;
-    background: radial-gradient(circle at bottom right, transparent 20px, #21272a 20px);
+    background: radial-gradient(circle at bottom right, transparent 20px, #141414 20px);
     z-index: 99;
   }
   
   .body-border {
-    border: 7px solid #21272a;
+    border: 7px solid #141414;
   }
 
-  .ruubEnter {
+  .defendEnter {
     z-index: 1;
   }
 
