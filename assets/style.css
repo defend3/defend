@@ -11,28 +11,28 @@
 .bottom-right {
   bottom: 0;
   right: 0;
-  background: radial-gradient(circle at top left, transparent 42px, #141414 42px);
+  background: radial-gradient(circle at top left, transparent 42px, #21272a 42px);
   z-index: 99;
 }
 
 .bottom-left {
   bottom: 0;
   left: 0;
-  background: radial-gradient(circle at top right, transparent 42px, #141414 42px);
+  background: radial-gradient(circle at top right, transparent 42px, #21272a 42px);
   z-index: 99;
 }
 
 .top-right {
   top: 0;
   right: 0;
-  background: radial-gradient(circle at bottom left, transparent 42px, #141414 42px);
+  background: radial-gradient(circle at bottom left, transparent 42px, #21272a 42px);
   z-index: 99;
 }
 
 .top-left {
   top: 0;
   left: 0;
-  background: radial-gradient(circle at bottom right, transparent 42px, #141414 42px);
+  background: radial-gradient(circle at bottom right, transparent 42px, #21272a 42px);
   z-index: 99;
 }
 
@@ -42,7 +42,7 @@
   left: 0;
   height: 100%;
   width: 100%;
-  border: 20px solid #141414;
+  border: 20px solid #21272a;
   z-index: 99;
 }
 
