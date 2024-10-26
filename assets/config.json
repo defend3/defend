@@ -8,6 +8,7 @@
             "bio": "blah blah blah",
             "socials": {
                 "discord": "666831324669280256",
+                "telegram": "cremated",
                 "tiktok": "injures",
                 "roblox": "418132426"
             }
@@ -26,7 +27,7 @@
 
             "discord": {
                 "icon": "assets/img/platforms/discord.svg",
-                "link": "https://discordapp.com/users/"
+                "link": "https://discord.com/users/"
             },
 
             "discordserver": {
