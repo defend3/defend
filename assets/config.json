@@ -5,7 +5,7 @@
 
         {
             "name": "defend",
-            "bio": "blah blah blah",
+            "bio": "one of a kind",
             "socials": {
                 "discordserver": "stupid",
                 "telegram": "cremated",
@@ -44,19 +44,9 @@
                 "link": "https://x.com/"
             },
 
-            "ogu": {
-                "icon": "assets/img/platforms/ogu.webp",
-                "link": "https://oguser.com/"
-            },
-
             "telegram": {
                 "icon": "assets/img/platforms/telegram.webp",
                 "link": "https://t.me/"
-            },
-
-            "github": {
-                "icon": "assets/img/platforms/github.webp",
-                "link": "https://github.com/"
             },
 
             "namemc": {
