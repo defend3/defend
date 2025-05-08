@@ -9,7 +9,7 @@ $(document).ready(function () {
       <canvas class="fireworks"></canvas>
       <div class="dyProfile">
         <img src="assets/img/pfp.webp">
-        <div class="name">dy <img class="dev" src="assets/img/dev.png" title="sick!"></div>
+        <div class="name">defend <img class="dev" src="assets/img/dev.png" title="sick!"></div>
         <div class="bio">ddddddddddddddddddddd</div>
       </div>
       <canvas id="c"></canvas>
