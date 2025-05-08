@@ -186,7 +186,7 @@ $(document).ready(function () {
     });
   
     $(window).focus(function () {
-      document.title = "dy ^-^";
+      document.title = "defend ,(^ᴗ^)ゞ";
     });
   
   
