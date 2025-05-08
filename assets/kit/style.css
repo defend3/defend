@@ -1,0 +1,231 @@
+html,
+body {
+    margin: 0;
+    background-color: #1A2026;
+    -moz-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 50px;
+    background-image: url(../img/bg.png);
+}
+
+.dyEnter {
+    position: fixed;
+    backdrop-filter: blur(120px);
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .25s ease-in-out;
+}
+
+.dyEnter>img {
+    height: 80px;
+    transition: .3s ease-in-out;
+}
+
+.dyEnter>img:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.dyBg {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center center;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.dyOverlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    pointer-events: none;
+    background: url(../img/dot.png);
+    background-size: 4px;
+}
+
+.fireworks {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 1em;
+}
+
+.modal img {
+    height: 50%;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+.dyProfile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    opacity: 0;
+}
+
+.dyProfile img {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    box-shadow: 0 0 125px 0 rgba(0, 0, 0, 0.8);
+    transition: .1s ease-in-out;
+    aspect-ratio: 1/1;
+
+}
+
+.dyProfile img:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    box-shadow: none;
+    box-shadow: 0 0 75px 0 rgba(0, 0, 0, 0.8);
+}
+
+.dyProfile .name {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 40px;
+    font-family: 'Inter', sans-serif;
+    text-shadow: 0 0 16px rgba(0, 0, 0, 1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dyProfile .name img {
+    height: 21px;
+    width: 20px;
+    border-radius: 0;
+}
+
+.dyProfile .bio {
+    color: #fff;
+    background: #0A0F13;
+    font-size: 21px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px 34px;
+    border-radius: 12px;
+    font-family: monospace;
+    min-width: 325px;
+    position: relative;
+    transition: .1s ease-in-out;
+}
+
+.dyProfile .bio:hover {
+    transform: scale(1.02);
+}
+
+.dyWrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    z-index: 3;
+    opacity: 0;
+}
+
+.dyItem {
+    width: 70px!important;
+    height: 70px!important;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: 0;
+    aspect-ratio: 1/1;
+    transform: translateZ(0);
+    background-size: cover;
+    background-position: center center;
+}
+
+#c {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+#magicPointer {
+    z-index: 9999;
+}
+
+@keyframes dyEnter {
+    0% {
+        opacity: 0;
+    }
+
+    75% {
+        opacity: .8;
+    }
+
+    80% {
+        opacity: .9;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+@media screen and (max-width: 1024px) {
+
+    .dyProfile {
+    }
+
+    .bio {
+        min-width: 90%!important;
+        font-size: 18px!important;
+    }
+
+    .profile img:hover {
+        transform: none;
+        cursor: pointer;
+    }
+
+    .dyWrap {
+        gap: 16px;
+    }
+
+    .dyItem {
+        width: 56px!important;
+        height: 56px!important;
+    }
+
+}
