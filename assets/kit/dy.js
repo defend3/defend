@@ -1,289 +1,298 @@
-// load
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function() {
+  
+  const CONFIG = {
+    selectors: {
+      body: 'body',
+      enter: '.dyEnter',
+      player: '.dyPlayer',
+      bgVideo: '.dyBg',
+      overlay: '.dyOverlay',
+      fireworks: '.fireworks',
+      profile: '.dyProfile',
+      canvas: '#c',
+      wrap: '.dyWrap',
+      bio: '.bio',
+      dev: '.dev'
+    },
+    assets: {
+      eyeClose: 'assets/img/eye-close.svg',
+      eyeOpen: 'assets/img/eye-open.svg',
+      pfp: 'assets/img/pfp.webp',
+      devIcon: 'assets/img/dev.png',
+      hacker: 'assets/img/hacker.png',
+      audio: 'assets/media/audio.mp3',
+      devAudio: 'assets/media/dev.mp3',
+      video: 'assets/media/src.mp4',
+      config: 'assets/config.json'
+    },
+    animations: {
+      magnetDistance: 110,
+      magnetScale: 1.3,
+      magnetSpeed: 0.5,
+      resetSpeed: 0.6
+    }
+  };
 
-    $('body').prepend(`
-      <div class="dyEnter"><img src="assets/img/eye-close.svg"></div>
-      <audio src="assets/media/audio.mp3" class="dyPlayer" loop></audio>
-      <video class="dyBg" autoplay muted loop id="bgvid"><source src="assets/media/src.mp4" type="video/mp4"></video>
+  initializePage();
+  
+  function initializePage() {
+    createPageElements();
+    loadConfiguration();
+    setupEventListeners();
+    setupResponsiveFeatures();
+  }
+
+  function createPageElements() {
+    const elements = `
+      <div class="dyEnter">
+        <img src="${CONFIG.assets.eyeClose}" alt="Enter">
+      </div>
+      <audio src="${CONFIG.assets.audio}" class="dyPlayer" loop></audio>
+      <video class="dyBg" autoplay muted loop id="bgvid">
+        <source src="${CONFIG.assets.video}" type="video/mp4">
+      </video>
       <div class="dyOverlay"></div>
       <canvas class="fireworks"></canvas>
       <div class="dyProfile">
-        <img src="assets/img/pfp.webp">
-        <div class="name">defend <img class="dev" src="assets/img/dev.png" title="sick!"></div>
+        <img src="${CONFIG.assets.pfp}" alt="Profile">
+        <div class="name">
+          defend 
+          <img class="dev" src="${CONFIG.assets.devIcon}" title="sick!" alt="Dev">
+        </div>
         <div class="bio">ddddddddddddddddddddd</div>
       </div>
       <canvas id="c"></canvas>
-    `);
-  
-    // fetch
-    $.ajax({
-      type: "GET",
-      url: "assets/config.json",
-      dataType: "json",
-      success: function (data) {
-  
-        // if (window.location.hostname !== "defend.wtf") {
-        //   window.location.replace("https://defend.wtf");
-        // }
-  
-        var profile = data.profile;
-        var config = data.config;
-        var socials = profile[0].socials;
-  
-        $.each(Object.entries(socials), function (index, entry) {
-          var key = entry[0];
-          var value = entry[1];
-  
-          console.log("Index:", index);
-          console.log("Key:", key);
-          console.log("Value:", value);
-  
-  
-          var $child = $('.dyWrap').children().eq(index)[0];
-          console.log("Child element:", $child);
-  
-          $($child).css({'background-image': 'url(assets/img/platforms/' + key + '.webp)'});
-  
-          $($child).on('mouseover', function () {
-            $($child).css({'transform': 'scale(1.1)'});
-          });
-  
-          var url = config.platforms[key].link+value;
-  
-          $($child).click(function () {
-            window.open(url, '_blank');
-          });
-  
-        });
-  
+    `;
+    
+    document.body.insertAdjacentHTML('afterbegin', elements);
+  }
+
+  async function loadConfiguration() {
+    try {
+      const response = await fetch(CONFIG.assets.config);
+      const data = await response.json();
+      
+      const { profile, config } = data;
+      const socials = profile[0].socials;
+      
+      setupSocialLinks(socials, config);
+      
+    } catch (error) {
+      console.error('Failed to load configuration:', error);
+    }
+  }
+
+  function setupSocialLinks(socials, config) {
+    Object.entries(socials).forEach(([key, value], index) => {
+      const childElement = document.querySelector('.dyWrap').children[index];
+      if (!childElement) return;
+
+      if (!value) return;
+
+      const platformConfig = config.platforms[key];
+      if (platformConfig && platformConfig.icon) {
+        childElement.style.backgroundImage = `url(${platformConfig.icon})`;
+      } else {
+        childElement.style.backgroundImage = `url(assets/img/platforms/${key}.webp)`;
       }
-    });
-  
-  
-    // dy attract
-    function magnetAni() {
-  
-      var cerchio = document.querySelectorAll('.dyItem');
-  
-      cerchio.forEach(function (elem) {
-        console.log(elem)
-        $(document).on('mousemove touch', function (e) {
-          magnetize(elem, e);
-        });
-      })
-  
-      $(document).on('mousemove touch', function(e){
-        magnetize('.cerchio', e);
+      
+      childElement.addEventListener('mouseenter', () => {
+        childElement.style.transform = 'scale(1.1)';
       });
-  
-      function magnetize(el, e) {
-        var mX = e.pageX,
-          mY = e.pageY;
-        const item = $(el);
-  
-        const customDist = item.data('dist') * 20 || 110;
-        const centerX = item.offset().left + (item.width() / 2);
-        const centerY = item.offset().top + (item.height() / 2);
-  
-        var deltaX = Math.floor((centerX - mX)) * -0.45;
-        var deltaY = Math.floor((centerY - mY)) * -0.45;
-  
-        var distance = calculateDistance(item, mX, mY);
-  
-        if (distance < customDist) {
-          TweenMax.to(item, 0.5, { y: deltaY, x: deltaX, scale: 1.3 });
-          item.addClass('magnet');
-        }
-        else {
-          TweenMax.to(item, 0.6, { y: 0, x: 0, scale: 1 });
-          item.removeClass('magnet');
-        }
-      }
-  
-      function calculateDistance(elem, mouseX, mouseY) {
-        return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offset().left + (elem.width() / 2)), 2) + Math.pow(mouseY - (elem.offset().top + (elem.height() / 2)), 2)));
-      }
-  
+      
+      childElement.addEventListener('mouseleave', () => {
+        childElement.style.transform = 'scale(1)';
+      });
+      
+      const url = platformConfig.link + value;
+      childElement.addEventListener('click', () => {
+        window.open(url, '_blank');
+      });
+    });
+  }
+
+  function setupEventListeners() {
+    document.querySelectorAll('img').forEach(img => {
+      img.addEventListener('dragstart', e => e.preventDefault());
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      document.title = document.hidden 
+        ? "where do you think you're going?" 
+        : "defend ,(^ᴗ^)ゞ";
+    });
+
+    const enterButton = document.querySelector('.dyEnter img');
+    if (enterButton) {
+      enterButton.addEventListener('click', handleEnterClick);
+      enterButton.addEventListener('mouseenter', handleEnterHover);
+      enterButton.addEventListener('mouseleave', handleEnterLeave);
     }
-  
-  
-  
-  
-  
-  
-    // magic mouse
-    function magicMouseExec() {
-      function calculateDistance(elem, mouseX, mouseY) {
-        return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offset().left + (elem.width() / 2)), 2) + Math.pow(mouseY - (elem.offset().top + (elem.height() / 2)), 2)));
-      }
-  
-      options = {
-        "hoverEffect": "circle-move",
-        "hoverItemMove": true,
-        "defaultCursor": false,
-        "outerWidth": 40,
-        "outerHeight": 40
-      };
-  
-      magicMouse(options);
-  
-    } magicMouseExec();
-  
-  
-    // image drag disable
-    $('img').on('dragstart', function (event) { event.preventDefault(); });
-  
-  
-    // change bg on click (pfp)
-  
-  
-    // text scramble
-    function textScramble() {
-  
-      let interval
-  
-      const element = document.querySelector('.bio')
-      const originalText = element.innerText
-  
-      const randomInt = max => Math.floor(Math.random() * max)
-      const randomFromArray = array => array[randomInt(array.length)]
-  
-      const scrambleText = text => {
-        const chars = '@$%><~*CWY%@*ZXCQY=+'.split('')
-        return text
-          .split('')
-          .map(x => randomInt(5) > 1 ? randomFromArray(chars) : x)
-          .join('')
-      }
-  
-      element.addEventListener('mouseover', () => {
-        interval = setInterval(() =>
-          element.innerText = scrambleText(originalText)
-          , 100)
-      })
-  
-      element.addEventListener('mouseout', () => {
-        clearInterval(interval)
-        element.innerText = originalText
-      })
-  
+
+    const devElement = document.querySelector('.dev');
+    if (devElement) {
+      devElement.addEventListener('click', handleDevClick);
     }
-  
-  
-    // for desktop
-    if ($(window).width() > 1024) {
-  
-      textScramble();
-      magnetAni();
-  
+  }
+
+  function handleEnterClick() {
+    const enterElement = document.querySelector('.dyEnter');
+    const profileElement = document.querySelector('.dyProfile');
+    const wrapElement = document.querySelector('.dyWrap');
+    const playerElement = document.querySelector('.dyPlayer');
+
+    enterElement.style.display = 'none';
+    profileElement.style.animation = 'dyEnter 2s ease-in-out forwards';
+    wrapElement.style.animation = 'dyEnter 2s ease-in-out forwards';
+    playerElement.play();
+  }
+
+  function handleEnterHover() {
+    const enterElement = document.querySelector('.dyEnter');
+    const img = enterElement.querySelector('img');
+    
+    enterElement.style.backdropFilter = 'blur(40px)';
+    img.src = CONFIG.assets.eyeOpen;
+  }
+
+  function handleEnterLeave() {
+    const enterElement = document.querySelector('.dyEnter');
+    const img = enterElement.querySelector('img');
+    
+    enterElement.style.backdropFilter = 'blur(50px)';
+    img.src = CONFIG.assets.eyeClose;
+  }
+
+  let devClicked = false;
+  function handleDevClick() {
+    if (devClicked) return;
+    
+    devClicked = true;
+    runMatrix();
+    
+    const bgVideo = document.querySelector('.dyBg');
+    const player = document.querySelector('.dyPlayer');
+    const profileImg = document.querySelector('.dyProfile img');
+    
+    bgVideo.style.display = 'none';
+    player.src = CONFIG.assets.devAudio;
+    player.play();
+    profileImg.src = CONFIG.assets.hacker;
+  }
+
+  function setupResponsiveFeatures() {
+    if (window.innerWidth > 1024) {
+      setupTextScramble();
+      setupMagnetAnimation();
+      setupMagicMouse();
+    }
+  }
+
+  function setupTextScramble() {
+    const bioElement = document.querySelector('.bio');
+    if (!bioElement) return;
+
+    const originalText = bioElement.textContent;
+    let interval;
+
+    const scrambleText = (text) => {
+      const chars = '@$%><~*CWY%@*ZXCQY=+'.split('');
+      return text
+        .split('')
+        .map(char => Math.random() > 0.2 ? chars[Math.floor(Math.random() * chars.length)] : char)
+        .join('');
+    };
+
+    bioElement.addEventListener('mouseenter', () => {
+      interval = setInterval(() => {
+        bioElement.textContent = scrambleText(originalText);
+      }, 100);
+    });
+
+    bioElement.addEventListener('mouseleave', () => {
+      clearInterval(interval);
+      bioElement.textContent = originalText;
+    });
+  }
+
+  function setupMagnetAnimation() {
+    const elements = document.querySelectorAll('.dyItem');
+    
+    elements.forEach(element => {
+      document.addEventListener('mousemove', (e) => magnetize(element, e));
+      document.addEventListener('touchmove', (e) => magnetize(element, e));
+    });
+  }
+
+  function magnetize(element, event) {
+    const rect = element.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+    
+    const deltaX = (centerX - mouseX) * -0.45;
+    const deltaY = (centerY - mouseY) * -0.45;
+    
+    const distance = Math.sqrt(
+      Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2)
+    );
+    
+    const customDist = element.dataset.dist * 20 || CONFIG.animations.magnetDistance;
+    
+    if (distance < customDist) {
+      element.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${CONFIG.animations.magnetScale})`;
+      element.classList.add('magnet');
     } else {
-      // for tablet and mobile
+      element.style.transform = 'translate(0, 0) scale(1)';
+      element.classList.remove('magnet');
     }
-  
-    // tab message
-    $(window).blur(function () {
-      document.title = "where do you think you're going?";
-    });
-  
-    $(window).focus(function () {
-      document.title = "defend ,(^ᴗ^)ゞ";
-    });
-  
-  
-    // dy enter
-    $('.dyEnter>img').on('click', function () {
-      $('.dyEnter').fadeOut('fast');
-      $('.dyProfile').css('animation', 'dyEnter 2s ease-in-out forwards');
-      $('.dyWrap').css('animation', 'dyEnter 2s ease-in-out forwards');
-      $('.dyPlayer').get(0).play();
-    })
-  
-    $('.dyEnter>img').mouseenter(function () {
-  
-      $('.dyEnter').css('backdrop-filter', 'blur(40px)');
-  
-      var $this = $(this);
-      $this.fadeOut(100, function () {
-        $this.attr('src', 'assets/img/eye-open.svg').fadeIn(100);
+  }
+
+  function setupMagicMouse() {
+    if (typeof magicMouse === 'function') {
+      magicMouse({
+        hoverEffect: "circle-move",
+        hoverItemMove: true,
+        defaultCursor: false,
+        outerWidth: 40,
+        outerHeight: 40
       });
-  
-    }).mouseleave(function () {
-  
-      $('.dyEnter').css('backdrop-filter', 'blur(50px)');
-  
-      var $this = $(this);
-      $this.fadeOut(100, function () {
-        $this.attr('src', 'assets/img/eye-close.svg').fadeIn(100);
-      });
-  
-    });
-  
-  
-    // dev easter egg
-    devClicked = false;
-    $('.dev').on('click', function () {
-      if (devClicked == false) {
-        devClicked = true;
-        runMatrix();
-        $('.dyBg').fadeOut('fast');
-        $('.dyPlayer').attr('src', 'assets/media/dev.mp3');
-        $('.dyPlayer')[0].play();
-        $('.dyProfile>img').attr('src', 'assets/img/hacker.png');
-      }
-    });
-    function runMatrix() {
-  
-      // geting canvas
-      var c = document.getElementById("c");
-      var ctx = c.getContext("2d");
-  
-      // making the canvas fullscreen
-      c.height = window.innerHeight;
-      c.width = window.innerWidth;
-  
-      // chinese characters - taken from the unicode charset
-      var matrix = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
-      // converting the string into an array of single characters
-      matrix = matrix.split("");
-  
-      var font_size = 12;
-      var columns = c.width / font_size; // number of columns for the rain
-      // an array of drops - one per column
-      var drops = [];
-      // x below is the x coordinate
-      // 1 = y co-ordinate of the drop(same for every drop initially)
-      for (var x = 0; x < columns; x++)
-        drops[x] = 1;
-  
-      // drawing the characters
-      function draw() {
-        // Black BG for the canvas
-        // translucent BG to show trail
-        ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
-        ctx.fillRect(0, 0, c.width, c.height);
-  
-        ctx.fillStyle = "#00ff00";//green text
-        ctx.font = font_size + "px arial";
-        // looping over drops
-        for (var i = 0; i < drops.length; i++) {
-          // a random chinese character to print
-          var text = matrix[Math.floor(Math.random() * matrix.length)];
-          // x = i*font_size, y = value of drops[i]*font_size
-          ctx.fillText(text, i * font_size, drops[i] * font_size);
-  
-          // sending the drop back to the top randomly after it has crossed the screen
-          // adding a randomness to the reset to make the drops scattered on the Y axis
-          if (drops[i] * font_size > c.height && Math.random() > 0.975)
-            drops[i] = 0;
-  
-          // incrementing Y coordinate
-          drops[i]++;
+    }
+  }
+
+  function runMatrix() {
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    
+    const matrix = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}".split("");
+    const fontSize = 12;
+    const columns = canvas.width / fontSize;
+    const drops = new Array(Math.floor(columns)).fill(1);
+    
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.fillStyle = "#00ff00";
+      ctx.font = `${fontSize}px arial`;
+      
+      drops.forEach((drop, i) => {
+        const text = matrix[Math.floor(Math.random() * matrix.length)];
+        ctx.fillText(text, i * fontSize, drop * fontSize);
+        
+        if (drop * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
         }
-      }
-  
-      setInterval(draw, 35);
-  
+        
+        drops[i]++;
+      });
     }
-  
-  
-  });
+    
+    setInterval(draw, 35);
+  }
+}); 
