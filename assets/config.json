@@ -9,7 +9,8 @@
             "socials": {
                 "telegram": "cremated",
                 "spotify": "3164x4v6yfe2lsoiyytux4kb7c4m",
-                "steam": "zxvcz"
+                "steam": "zxvcz",
+                "roblox": "418132426"
             }
         }
 
@@ -65,7 +66,7 @@
             },
 
             "roblox": {
-                "icon": "assets/img/platforms/roblox.webp",
+                "icon": "assets/img/platforms/roblox.svg",
                 "link": "https://roblox.com/users/"
             },
 
@@ -75,12 +76,12 @@
             },
 
             "spotify": {
-                "icon": "assets/img/platforms/spotify.webp",
+                "icon": "assets/img/platforms/spotify.svg",
                 "link": "https://open.spotify.com/user/"
             },
 
             "steam": {
-                "icon": "assets/img/platforms/steam.webp",
+                "icon": "assets/img/platforms/steam.svg",
                 "link": "https://steamcommunity.com/id/"
             },
 
