@@ -65,6 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     
     document.body.insertAdjacentHTML('afterbegin', elements);
+    
+    const playerElement = document.querySelector('.dyPlayer');
+    const bgVideo = document.querySelector('.dyBg');
+    
+    Promise.all([playerElement.play(), bgVideo.play()]).catch(error => {
+      console.error('Error playing media:', error);
+    });
   }
 
   async function loadConfiguration() {
@@ -135,45 +142,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function handleEnterClick() {
-        const enterElement = document.querySelector('.dyEnter');
-        const profileElement = document.querySelector('.dyProfile');
-        const wrapElement = document.querySelector('.dyWrap');
-        const playerElement = document.querySelector('.dyPlayer');
-        const bgVideo = document.querySelector('.dyBg');
+    function handleEnterClick() {
+    const enterElement = document.querySelector('.dyEnter');
+    const profileElement = document.querySelector('.dyProfile');
+    const wrapElement = document.querySelector('.dyWrap');
 
-        enterElement.style.display = 'none';
-        profileElement.style.animation = 'dyEnter 2s ease-in-out forwards';
-        wrapElement.style.animation = 'dyEnter 2s ease-in-out forwards';
-        
-        const playPromises = [playerElement.play(), bgVideo.play()];
-        
-        Promise.all(playPromises).then(() => {
-            syncAudioVideo(playerElement, bgVideo);
-        }).catch(error => {
-            console.error('Error playing media:', error);
-        });
-    }
-
-      function syncAudioVideo(audioElement, videoElement) {
-    setTimeout(() => {
-      const syncInterval = setInterval(() => {
-        if (!audioElement.paused && !videoElement.paused) {
-          const timeDiff = Math.abs(audioElement.currentTime - videoElement.currentTime);
-          
-          if (timeDiff > 0.5) {
-            audioElement.currentTime = videoElement.currentTime;
-          }
-        }
-      }, 2000);
-
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          clearInterval(syncInterval);
-        }
-      });
-    }, 1000);
+    enterElement.style.display = 'none';
+    profileElement.style.animation = 'dyEnter 2s ease-in-out forwards';
+    wrapElement.style.animation = 'dyEnter 2s ease-in-out forwards';
   }
+
+    
 
   function handleEnterHover() {
     const enterElement = document.querySelector('.dyEnter');
@@ -310,12 +289,15 @@ document.addEventListener('DOMContentLoaded', function() {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "#00ff00";
       ctx.font = `${fontSize}px arial`;
+      
       drops.forEach((drop, i) => {
         const text = matrix[Math.floor(Math.random() * matrix.length)];
         ctx.fillText(text, i * fontSize, drop * fontSize);
+        
         if (drop * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
+        
         drops[i]++;
       });
     }
