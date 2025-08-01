@@ -142,13 +142,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const enterElement = document.querySelector('.dyEnter');
         const profileElement = document.querySelector('.dyProfile');
         const wrapElement = document.querySelector('.dyWrap');
-        const playerElement = document.querySelector('.dyPlayer');
+        const audioElement = document.querySelector('.dyPlayer');
 
-        enterElement.style.display = 'none';
-        profileElement.style.animation = 'dyEnter 2s ease-in-out forwards';
-        wrapElement.style.animation = 'dyEnter 2s ease-in-out forwards';
-        playerElement.play();
-    }
+    enterElement.style.display = 'none';
+    profileElement.style.animation = 'dyEnter 2s ease-in-out forwards';
+    wrapElement.style.animation = 'dyEnter 2s ease-in-out forwards';
+    
+    audioElement.muted = false;
+    audioElement.play().catch(error => {
+      console.error('Error playing audio:', error);
+    });
+  }
 
     function handleEnterHover() {
         const enterElement = document.querySelector('.dyEnter');
