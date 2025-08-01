@@ -47,8 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="dyEnter">
             <img src="${CONFIG.assets.eyeClose}" alt="Enter">
           </div>
-          <audio src="${CONFIG.assets.audio}" class="dyPlayer" loop muted></audio>
-          <video class="dyBg" autoplay loop id="bgvid">
+          <audio src="${CONFIG.assets.audio}" class="dyPlayer" loop></audio>
+          <video class="dyBg" autoplay muted loop id="bgvid">
             <source src="${CONFIG.assets.video}" type="video/mp4">
           </video>
           <div class="dyOverlay"></div>
@@ -142,17 +142,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const enterElement = document.querySelector('.dyEnter');
         const profileElement = document.querySelector('.dyProfile');
         const wrapElement = document.querySelector('.dyWrap');
-        const audioElement = document.querySelector('.dyPlayer');
+        const playerElement = document.querySelector('.dyPlayer');
 
-    enterElement.style.display = 'none';
-    profileElement.style.animation = 'dyEnter 2s ease-in-out forwards';
-    wrapElement.style.animation = 'dyEnter 2s ease-in-out forwards';
-    
-    audioElement.muted = false;
-    audioElement.play().catch(error => {
-      console.error('Error playing audio:', error);
-    });
-  }
+        enterElement.style.display = 'none';
+        profileElement.style.animation = 'dyEnter 2s ease-in-out forwards';
+        wrapElement.style.animation = 'dyEnter 2s ease-in-out forwards';
+        playerElement.play();
+    }
 
     function handleEnterHover() {
         const enterElement = document.querySelector('.dyEnter');
