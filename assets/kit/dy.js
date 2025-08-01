@@ -136,41 +136,43 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function handleEnterClick() {
-    const enterElement = document.querySelector('.dyEnter');
-    const profileElement = document.querySelector('.dyProfile');
-    const wrapElement = document.querySelector('.dyWrap');
-    const playerElement = document.querySelector('.dyPlayer');
-    const bgVideo = document.querySelector('.dyBg');
+        const enterElement = document.querySelector('.dyEnter');
+        const profileElement = document.querySelector('.dyProfile');
+        const wrapElement = document.querySelector('.dyWrap');
+        const playerElement = document.querySelector('.dyPlayer');
+        const bgVideo = document.querySelector('.dyBg');
 
-    enterElement.style.display = 'none';
-    profileElement.style.animation = 'dyEnter 2s ease-in-out forwards';
-    wrapElement.style.animation = 'dyEnter 2s ease-in-out forwards';
-    
-    const playPromises = [playerElement.play(), bgVideo.play()];
-    
-    Promise.all(playPromises).then(() => {
-      syncAudioVideo(playerElement, bgVideo);
-    }).catch(error => {
-      console.error('Error playing media:', error);
-    });
-  }
-
-  function syncAudioVideo(audioElement, videoElement) {
-    const syncInterval = setInterval(() => {
-      if (!audioElement.paused && !videoElement.paused) {
-        const timeDiff = Math.abs(audioElement.currentTime - videoElement.currentTime);
+        enterElement.style.display = 'none';
+        profileElement.style.animation = 'dyEnter 2s ease-in-out forwards';
+        wrapElement.style.animation = 'dyEnter 2s ease-in-out forwards';
         
-        if (timeDiff > 0.1) {
-          audioElement.currentTime = videoElement.currentTime;
-        }
-      }
-    }, 1000);
+        const playPromises = [playerElement.play(), bgVideo.play()];
+        
+        Promise.all(playPromises).then(() => {
+            syncAudioVideo(playerElement, bgVideo);
+        }).catch(error => {
+            console.error('Error playing media:', error);
+        });
+    }
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        clearInterval(syncInterval);
-      }
-    });
+      function syncAudioVideo(audioElement, videoElement) {
+    setTimeout(() => {
+      const syncInterval = setInterval(() => {
+        if (!audioElement.paused && !videoElement.paused) {
+          const timeDiff = Math.abs(audioElement.currentTime - videoElement.currentTime);
+          
+          if (timeDiff > 0.5) {
+            audioElement.currentTime = videoElement.currentTime;
+          }
+        }
+      }, 2000);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          clearInterval(syncInterval);
+        }
+      });
+    }, 1000);
   }
 
   function handleEnterHover() {
@@ -190,24 +192,24 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   let devClicked = false;
-  function handleDevClick() {
-    if (devClicked) return;
+             function handleDevClick() {
+         if (devClicked) return;
 
-    devClicked = true;
-    runMatrix();
+         devClicked = true;
+         runMatrix();
 
-    const bgVideo = document.querySelector('.dyBg');
-    const player = document.querySelector('.dyPlayer');
-    const profileImg = document.querySelector('.dyProfile img');
+         const bgVideo = document.querySelector('.dyBg');
+         const player = document.querySelector('.dyPlayer');
+         const profileImg = document.querySelector('.dyProfile img');
 
-    bgVideo.style.display = 'none';
-    player.src = CONFIG.assets.devAudio;
-    player.play().catch(error => {
-      console.error('Error playing dev audio:', error);
-    });
-    
-    profileImg.src = CONFIG.assets.hacker;
-  }
+         bgVideo.style.display = 'none';
+         player.src = CONFIG.assets.devAudio;
+         player.play().catch(error => {
+             console.error('Error playing dev audio:', error);
+         });
+         
+         profileImg.src = CONFIG.assets.hacker;
+     }
 
   function setupResponsiveFeatures() {
     if (window.innerWidth > 1024) {
@@ -306,22 +308,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function draw() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
       ctx.fillStyle = "#00ff00";
       ctx.font = `${fontSize}px arial`;
-      
       drops.forEach((drop, i) => {
         const text = matrix[Math.floor(Math.random() * matrix.length)];
         ctx.fillText(text, i * fontSize, drop * fontSize);
-        
         if (drop * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
-        
         drops[i]++;
       });
     }
     
     setInterval(draw, 35);
   }
-});
+}); 
